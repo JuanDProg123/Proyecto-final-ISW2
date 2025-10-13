@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-ProyectoFinalIsw2Application<proyectoFinalISW2>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.proyectoFinalISW2.proyectoFinalISW2.ProyectoFinalIsw2Application",
+            "projectName": "proyectoFinalISW2",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}
