@@ -1,13 +1,17 @@
 package com.proyectoFinalISW2.proyectoFinalISW2.models;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
 @Table (name="BICICLETA")
 public class BicicletaModel {
 
-
+    @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id_Bicicleta;
 
     private String tipo;

@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Login - Renta de Bicicletas</title>
+<title>Login</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
 
@@ -147,8 +147,41 @@
       <button type="submit" class="login-button">Entrar</button>
     </form>
     <div class="login-footer">
-      ¿No tienes cuenta? <a href="#">Regístrate</a>
-    </div>
+  ¿No tienes cuenta? <a href="/registro">Regístrate</a>
+</div>
+
   </div>
 </body>
+<script>
+if (localStorage.getItem("usuario")) {
+  window.location.href = "/home.html";
+}
+</script>
+
+<script>
+document.querySelector("form").addEventListener("submit", async function (e) {
+  e.preventDefault();
+
+  const email = document.querySelector('input[type="email"]').value;
+  const contraseña = document.querySelector('input[type="password"]').value;
+
+  const response = await fetch("http://localhost:8080/api/usuario/login", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email, contraseña })
+  });
+
+  if (response.ok) {
+    const usuario = await response.json();
+    alert(`Bienvenido, ${usuario.nombre} 🚲`);
+    // Guarda el usuario en el navegador (para futuras validaciones)
+    localStorage.setItem("usuario", JSON.stringify(usuario));
+    // Redirigir a otra página del sistema (ej: dashboard)
+    window.location.href = "/home.html";
+  } else {
+    alert("❌ Credenciales incorrectas. Intenta nuevamente.");
+  }
+});
+</script>
+
 </html>

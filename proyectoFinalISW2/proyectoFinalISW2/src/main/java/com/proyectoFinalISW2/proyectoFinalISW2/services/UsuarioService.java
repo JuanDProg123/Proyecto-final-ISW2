@@ -35,8 +35,11 @@ public class UsuarioService {
         usuario.setNombre(request.getNombre()); 
         usuario.setApellido(request.getApellido());
         usuario.setEmail(request.getEmail());
-        usuario.setTelefono(request.getTelefono());
-        usuario.setRol(request.getRol());
+        usuario.setPassword(request.getPassword());
+        usuario.setSaldo(request.getSaldo());
+        usuario.setEstado(request.getEstado());
+        usuario.setPuntos_fidelizacion(request.getPuntos_fidelizacion());
+        
 
         
         return usuarioRepository.save(usuario);

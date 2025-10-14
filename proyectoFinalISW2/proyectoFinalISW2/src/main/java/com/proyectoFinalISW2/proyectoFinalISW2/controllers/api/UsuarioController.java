@@ -1,9 +1,12 @@
-package com.proyectoFinalISW2.proyectoFinalISW2.controllers;
+package com.proyectoFinalISW2.proyectoFinalISW2.controllers.api;
 
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -56,6 +59,23 @@ public class UsuarioController {
         }
         
     }
+
+    @PostMapping("/login")
+public ResponseEntity<?> loginUsuario(@RequestBody Map<String, String> loginData) {
+    String email = loginData.get("email");
+    String password = loginData.get("password"); // igual que el campo en tu entidad
+
+    Optional<UsuarioModel> usuarioOpt = usuarioService.getUsuario().stream()
+        .filter(u -> u.getEmail().equals(email) && u.getPassword().equals(password))
+        .findFirst();
+
+    if (usuarioOpt.isPresent()) {
+        return ResponseEntity.ok(usuarioOpt.get());
+    } else {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Credenciales inválidas");
+    }
+}
+
 
    
 

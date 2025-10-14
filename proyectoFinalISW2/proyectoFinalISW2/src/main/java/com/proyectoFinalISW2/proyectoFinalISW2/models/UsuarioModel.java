@@ -1,12 +1,17 @@
 package com.proyectoFinalISW2.proyectoFinalISW2.models;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
 @Table(name="Usuario")
 public class UsuarioModel {
 
+    @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long idUsuario;
 
     private String nombre;
@@ -15,9 +20,13 @@ public class UsuarioModel {
 
     private String email;
 
-    private String telefono;
+    private String password;
 
-    private String rol;
+    private int saldo;
+
+    private String estado;
+
+    private int puntos_fidelizacion;
 
     public Long getIdUsuario() {
         return idUsuario;
@@ -51,23 +60,45 @@ public class UsuarioModel {
         this.email = email;
     }
 
-    public String getTelefono() {
-        return telefono;
-    }
-
-    public void setTelefono(String telefono) {
-        this.telefono = telefono;
-    }
-
-    public String getRol() {
-        return rol;
-    }
-
-    public void setRol(String rol) {
-        this.rol = rol;
-    }
-
     
+
+    public int getSaldo() {
+        return saldo;
+    }
+
+    public void setSaldo(int saldo) {
+        this.saldo = saldo;
+    }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
+
+    public int getPuntos_fidelizacion() {
+        return puntos_fidelizacion;
+    }
+
+    public void setPuntos_fidelizacion(int puntos_fidelizacion) {
+        this.puntos_fidelizacion = puntos_fidelizacion;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+
+
+
+
+   
 
 
 
