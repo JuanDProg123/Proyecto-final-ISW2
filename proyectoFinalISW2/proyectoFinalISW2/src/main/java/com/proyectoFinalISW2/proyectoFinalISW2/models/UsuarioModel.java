@@ -28,6 +28,13 @@ public class UsuarioModel {
 
     private int puntos_fidelizacion;
 
+    // 🔹 Nuevo: indica si la cuenta está activa
+    private boolean activo = false;
+
+    // 🔹 Nuevo: token único para la activación por correo
+    private String tokenActivacion;
+
+    // Getters y Setters
     public Long getIdUsuario() {
         return idUsuario;
     }
@@ -59,8 +66,6 @@ public class UsuarioModel {
     public void setEmail(String email) {
         this.email = email;
     }
-
-    
 
     public int getSaldo() {
         return saldo;
@@ -94,13 +99,19 @@ public class UsuarioModel {
         this.password = password;
     }
 
+    public boolean isActivo() {
+        return activo;
+    }
 
+    public void setActivo(boolean activo) {
+        this.activo = activo;
+    }
 
+    public String getTokenActivacion() {
+        return tokenActivacion;
+    }
 
-
-   
-
-
-
-    
+    public void setTokenActivacion(String tokenActivacion) {
+        this.tokenActivacion = tokenActivacion;
+    }
 }

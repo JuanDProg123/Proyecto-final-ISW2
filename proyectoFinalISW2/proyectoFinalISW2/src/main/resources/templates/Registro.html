@@ -5,12 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Registro - Renta de Bicicletas</title>
 <style>
-  * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-  }
-
   body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background: linear-gradient(135deg, #fff9e6 20%, #ffeb3b 90%);
@@ -19,18 +13,15 @@
     justify-content: center;
     align-items: center;
   }
-
   .container {
     width: 600px;
     background: #ffffffcc;
     border-radius: 18px;
     padding: 50px 40px;
-    box-shadow:
-      0 15px 40px rgba(255, 235, 59, 0.3),
-      0 5px 15px rgba(255, 193, 7, 0.2);
+    box-shadow: 0 15px 40px rgba(255, 235, 59, 0.3),
+                0 5px 15px rgba(255, 193, 7, 0.2);
     color: #5a4500;
   }
-
   h1 {
     text-align: center;
     margin-bottom: 40px;
@@ -41,18 +32,8 @@
     text-transform: uppercase;
     text-shadow: 1px 1px 4px #ffea00aa;
   }
-
-  form {
-    display: flex;
-    flex-direction: column;
-  }
-
-  label {
-    margin-bottom: 12px;
-    font-size: 1.2rem;
-    font-weight: 600;
-  }
-
+  form { display: flex; flex-direction: column; }
+  label { margin-bottom: 12px; font-size: 1.2rem; font-weight: 600; }
   input {
     padding: 14px 18px;
     border: 2px solid #ffeb3b;
@@ -64,16 +45,10 @@
     transition: border-color 0.3s ease, box-shadow 0.3s ease;
     outline: none;
   }
-
-  input::placeholder {
-    color: #bfb750;
-  }
-
   input:focus {
     border-color: #fbc02d;
     box-shadow: 0 0 12px 3px #fbc02daa;
   }
-
   button {
     padding: 16px 0;
     background: linear-gradient(45deg, #fbc02d, #ffeb3b);
@@ -86,22 +61,16 @@
     box-shadow: 0 10px 25px rgba(251, 192, 7, 0.4);
     transition: background 0.3s ease, transform 0.3s ease;
   }
-
   button:hover {
     background: linear-gradient(45deg, #ffeb3b, #fbc02d);
     transform: translateY(-3px);
-  }
-
-  button:active {
-    transform: translateY(-1px);
-    box-shadow: 0 6px 12px rgba(251, 192, 7, 0.6);
   }
 </style>
 </head>
 <body>
   <div class="container">
     <h1>Registro</h1>
-    <form>
+    <form id="registroForm">
       <label for="nombre">Nombre</label>
       <input type="text" id="nombre" name="nombre" placeholder="Tu nombre" required />
       
@@ -117,32 +86,31 @@
       <button type="submit">Registrar</button>
     </form>
   </div>
-</body>
 
 <script>
-document.querySelector("form").addEventListener("submit", async function (e) {
-  e.preventDefault(); // evita el envío normal del formulario
+document.getElementById("registroForm").addEventListener("submit", async function (e) {
+  e.preventDefault();
 
   const data = {
     nombre: document.getElementById("nombre").value,
     apellido: document.getElementById("apellido").value,
     email: document.getElementById("email").value,
-    contraseña: document.getElementById("password").value,  // igual que tu modelo
+    password: document.getElementById("password").value, 
     saldo: 0,
     estado: "activo",
     puntos_fidelizacion: 0
   };
 
   try {
-    const response = await fetch("http://localhost:8080/usuario", {
+    const response = await fetch("http://localhost:8080/usuario", { 
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data)
     });
 
     if (response.ok) {
-      alert("Usuario registrado correctamente 🎉");
-      document.querySelector("form").reset();
+      alert("Usuario registrado correctamente  Revisa tu correo para activarlo.");
+      document.getElementById("registroForm").reset();
     } else {
       alert("❌ Error al registrar el usuario");
     }
@@ -152,5 +120,5 @@ document.querySelector("form").addEventListener("submit", async function (e) {
   }
 });
 </script>
-
+</body>
 </html>
