@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Login</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
+
+  body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-family: 'Montserrat', sans-serif;
+    background: linear-gradient(135deg, #fff9e6 15%, #ffde59 90%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .login-container {
+    background: #fff;
+    width: 420px;
+    padding: 50px 45px;
+    border-radius: 24px;
+    box-shadow:
+      0 15px 30px rgba(255, 215, 0, 0.25),
+      0 5px 15px rgba(255, 223, 100, 0.2);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Icon bike on top */
+  .bike-icon {
+    position: absolute;
+    top: -60px;
+    right: -60px;
+    width: 130px;
+    height: 130px;
+    opacity: 0.1;
+    background: url('https://upload.wikimedia.org/wikipedia/commons/thumb/e/ea/Bicycle_icon.svg/1024px-Bicycle_icon.svg.png') no-repeat center;
+    background-size: contain;
+  }
+
+  h2 {
+    font-weight: 700;
+    color: #ccaa00;
+    font-size: 2.8rem;
+    margin-bottom: 38px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    text-shadow: 1px 1px 4px #ffea00aa;
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .login-input {
+    font-size: 1.1rem;
+    padding: 15px 20px;
+    margin-bottom: 30px;
+    border: 2px solid #ffca28;
+    border-radius: 16px;
+    background: #fff9d6;
+    color: #665800;
+    transition: all 0.3s ease;
+    outline: none;
+  }
+  .login-input::placeholder {
+    color: #aa9900;
+  }
+  .login-input:focus {
+    border-color: #ffb300;
+    box-shadow: 0 0 12px 3px #ffb300aa;
+    background: #fffec9;
+    transform: scale(1.04);
+  }
+
+  .login-button {
+    background: linear-gradient(45deg, #fbc02d, #fff176);
+    color: #504000;
+    border: none;
+    border-radius: 24px;
+    font-size: 1.4rem;
+    font-weight: 700;
+    padding: 16px 0;
+    box-shadow: 0 10px 20px rgba(251, 192, 7, 0.35);
+    cursor: pointer;
+    transition: background 0.4s ease, transform 0.3s ease;
+  }
+  .login-button:hover {
+    background: linear-gradient(45deg, #fff176, #fbc02d);
+    transform: translateY(-4px);
+  }
+  .login-button:active {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 10px rgba(251, 192, 7, 0.6);
+  }
+
+  .login-footer {
+    margin-top: 28px;
+    font-size: 1rem;
+    color: #aa9f00;
+  }
+  .login-footer a {
+    color: #ccaa00;
+    font-weight: 700;
+    text-decoration: none;
+    border-bottom: 2px solid transparent;
+    transition: border-color 0.3s ease;
+  }
+  .login-footer a:hover {
+    border-color: #ccaa00;
+  }
+
+  /* Responsive */
+  @media (max-width: 450px) {
+    .login-container {
+      width: 90%;
+      padding: 40px 25px;
+    }
+    h2 {
+      font-size: 2rem;
+      letter-spacing: 1.5px;
+    }
+    .login-input {
+      font-size: 1rem;
+      padding: 14px 18px;
+    }
+    .login-button {
+      font-size: 1.2rem;
+      padding: 14px 0;
+    }
+  }
+</style>
+</head>
+<body>
+  <div class="login-container">
+    <div class="bike-icon"></div>
+    <h2>Iniciar Sesión</h2>
+    <form>
+      <input type="email" class="login-input" placeholder="Correo electrónico" required />
+      <input type="password" class="login-input" placeholder="Contraseña" required />
+      <button type="submit" class="login-button">Entrar</button>
+    </form>
+    <div class="login-footer">
+  ¿No tienes cuenta? <a href="/registro">Regístrate</a>
+</div>
+
+  </div>
+</body>
+<script>
+if (localStorage.getItem("usuario")) {
+  window.location.href = "/home.html";
+}
+</script>
+
+<script>
+document.querySelector("form").addEventListener("submit", async function (e) {
+  e.preventDefault();
+
+  const email = document.querySelector('input[type="email"]').value;
+  const contraseña = document.querySelector('input[type="password"]').value;
+
+  const response = await fetch("http://localhost:8080/api/usuario/login", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email, contraseña })
+  });
+
+  if (response.ok) {
+    const usuario = await response.json();
+    alert(`Bienvenido, ${usuario.nombre} 🚲`);
+    // Guarda el usuario en el navegador (para futuras validaciones)
+    localStorage.setItem("usuario", JSON.stringify(usuario));
+    // Redirigir a otra página del sistema (ej: dashboard)
+    window.location.href = "/home.html";
+  } else {
+    alert("❌ Credenciales incorrectas. Intenta nuevamente.");
+  }
+});
+</script>
+
+</html>
