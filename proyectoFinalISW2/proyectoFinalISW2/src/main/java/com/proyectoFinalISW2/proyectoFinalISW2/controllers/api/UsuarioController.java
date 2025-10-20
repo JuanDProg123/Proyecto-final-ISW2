@@ -8,37 +8,50 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.stereotype.Controller;
 
+import com.proyectoFinalISW2.proyectoFinalISW2.DTO.TarjetaRegistroDTO;
+import com.proyectoFinalISW2.proyectoFinalISW2.models.TarjetaModel;
 import com.proyectoFinalISW2.proyectoFinalISW2.models.UsuarioModel;
+import com.proyectoFinalISW2.proyectoFinalISW2.services.TarjetaService;
 import com.proyectoFinalISW2.proyectoFinalISW2.services.UsuarioService;
 
 @RestController
 @RequestMapping("/usuario")
 public class UsuarioController {
+
     @Autowired
     private UsuarioService usuarioService;
+    
+    @Autowired 
+    private TarjetaService tarjetaService;
+
+
     @GetMapping
     public ArrayList<UsuarioModel> getUsuario() {
         return this.usuarioService.getUsuario();
     }
+    
     @PostMapping
     public UsuarioModel saveUsuario(@RequestBody UsuarioModel usuario) {
         return this.usuarioService.saveUsuario(usuario);
     }
+    
     @PostMapping("/form")
     public ResponseEntity<?> saveUsuarioFromForm(@ModelAttribute UsuarioModel usuario) {
         usuarioService.saveUsuario(usuario);
         return ResponseEntity.ok("Usuario registrado desde formulario. Revisa tu correo para activarlo.");
     }
+    
     @GetMapping(path = "/{id}")
     public Optional<UsuarioModel> getUsuariotById(@PathVariable("id") Long Id) {
         return this.usuarioService.getById(Id);
     }
+    
     @PutMapping(path = "/{id}")
     public UsuarioModel updateUsuariotById(@RequestBody UsuarioModel request, @PathVariable("id") Long id) {
         return this.usuarioService.updateById(request, id);
     }
+    
     @DeleteMapping(path = "/{id}")
     public String deleteById(@PathVariable("id") Long id) {
         boolean ok = this.usuarioService.deleteUsuario(id);
@@ -48,6 +61,7 @@ public class UsuarioController {
             return "Error al eliminar";
         }
     }
+    
     @GetMapping("/activar/{token}")
     public ResponseEntity<String> activarCuenta(@PathVariable String token) {
         Optional<UsuarioModel> usuarioOpt = usuarioService.getUsuario().stream()
@@ -64,6 +78,7 @@ public class UsuarioController {
                     .body("❌ Token inválido o expirado.");
         }
     }
+    
     @PostMapping("/login")
     public ResponseEntity<?> loginUsuario(@RequestBody Map<String, String> loginData) {
         String email = loginData.get("email");
@@ -82,5 +97,37 @@ public class UsuarioController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Credenciales inválidas");
         }
     }
-}
 
+
+
+
+    // URL: http://localhost:8080/usuario/tarjeta/registrar
+    @PostMapping("/tarjeta/registrar") 
+    public ResponseEntity<?> registrarTarjeta(
+            @RequestBody TarjetaRegistroDTO tarjetaDTO) {
+
+
+        final Long usuarioId = 1L; 
+
+        Optional<UsuarioModel> usuarioOptional = usuarioService.getById(usuarioId);
+        if (!usuarioOptional.isPresent()) {
+            return new ResponseEntity<>("Error de autenticación: Usuario no encontrado.", HttpStatus.UNAUTHORIZED);
+        }
+        UsuarioModel usuario = usuarioOptional.get();
+
+        try {
+
+            TarjetaModel tarjetaGuardada = tarjetaService.registrarTarjetaSegura(usuario, tarjetaDTO);
+
+            return new ResponseEntity<>(
+                "✅ Tarjeta registrada con éxito. Usaremos los últimos 4 dígitos: " + tarjetaGuardada.getUltimosCuatroDigitos(),
+                HttpStatus.CREATED);
+                
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+            
+        } catch (Exception e) {
+            return new ResponseEntity<>("❌ Error interno al procesar la tarjeta.", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+}
