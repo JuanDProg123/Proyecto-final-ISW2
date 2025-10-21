@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | Renta de Bicicletas</title>
+    <link rel="stylesheet" href="styles.css"> 
+</head>
+<body>
+
+    <div class="dashboard-container">
+        
+        <div class="profile-sidebar">
+            <div class="profile-icon">🚲</div>
+            <div class="user-name" id="userNameDisplay">Cargando...</div>
+            
+            <nav class="dashboard-menu">
+                <a href="#">⚙️ Editar Información</a>
+                <a href="registro_tarjeta.html">💳 Registrar Tarjeta</a> 
+            </nav>
+            
+            <button class="main-button logout-button" id="logoutButton">Cerrar Sesión</button>
+        </div>
+        
+        <div class="main-content">
+            <h1>Panel Principal</h1>
+            <p>Aquí podrás ver un resumen de tu saldo, tus alquileres activos y tus puntos de fidelización.</p>
+            <div class="stats-grid">
+                <div class="stat-card"><h2>$0.00</h2><p>Saldo Actual</p></div>
+                <div class="stat-card"><h2>0</h2><p>Alquileres Activos</p></div>
+                <div class="stat-card"><h2>0</h2><p>Puntos Fidelización</p></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const userData = localStorage.getItem("usuario");
+            const userNameDisplay = document.getElementById("userNameDisplay");
+            const logoutButton = document.getElementById("logoutButton");
+
+            if (userData) {
+                const usuario = JSON.parse(userData);
+                // Muestra el nombre del usuario
+                userNameDisplay.textContent = usuario.nombre; 
+            } else {
+                // Si no hay datos de usuario, redirige al login
+                window.location.href = "/login.html"; 
+            }
+
+            // Lógica para el cierre de sesión
+            logoutButton.addEventListener('click', () => {
+                localStorage.removeItem("usuario");
+                alert("¡Sesión cerrada con éxito! Vuelve pronto 🚲");
+                window.location.href = "/login.html";
+            });
+        });
+    </script>
+</body>
+</html>
