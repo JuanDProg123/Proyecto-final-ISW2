@@ -32,10 +32,12 @@ public class PagoService {
 
     private boolean validarFormato(TarjetaRegistroDTO tarjeta) {
         // Validación básica (13-19 dígitos, 3 o 4 CVV, MM/AA)
+        System.out.println("sapoHp");
         return tarjeta.getNumeroTarjeta() != null && tarjeta.getNumeroTarjeta().matches("^\\d{13,19}$") &&
                tarjeta.getCvv() != null && tarjeta.getCvv().matches("^\\d{3,4}$") &&
                tarjeta.getFechaVencimiento() != null && tarjeta.getFechaVencimiento().matches("^\\d{2}/\\d{2}$");
     }
+
 
     private boolean estaVencida(String fechaVencimiento) {
         if (fechaVencimiento == null) return true;

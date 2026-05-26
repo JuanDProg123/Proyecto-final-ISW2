@@ -38,6 +38,7 @@ public class EmailService {
             helper.setSubject(asunto);
             helper.setText(cuerpoHtml, true); 
             mailSender.send(mensaje);
+
         } catch (MessagingException e) {
             throw new RuntimeException("Error al enviar el correo de confirmación", e);
         }
